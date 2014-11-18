@@ -56,6 +56,7 @@ void usage(void)
 	printf("-v, --vid <id>             set the vendor ID (VID, use 0x prefix for hex)\n");
 	printf("-p, --pid <id>             set the product ID (PID, use 0x prefix for hex)\n");
 	printf("-i, --iid <id>             set the interface ID (MI)\n");
+	printf("-g, --guid <id>            set the device GUID\n");
 	printf("-t, --type <driver_type>   set the driver to install\n");
 	printf("                           (0=WinUSB, 1=libusb-win32, 2=libusbK, 3=custom)\n");
 	printf("-w, --wcid                 use a WCID driver instead of a device-specific\n");
@@ -111,6 +112,7 @@ int __cdecl main(int argc, char** argv)
 		{"manufacturer", required_argument, 0, 'm'},
 		{"vid", required_argument, 0, 'v'},
 		{"pid", required_argument, 0, 'p'},
+		{"guid", optional_argument, 0, 'g'},
 		{"iid", required_argument, 0, 'i'},
 		{"type", required_argument, 0, 't'},
 		{"filter", no_argument, 0, 2},
@@ -134,7 +136,7 @@ int __cdecl main(int argc, char** argv)
 
 	while(1)
 	{
-		c = getopt_long(argc, argv, "n:f:m:d:c:v:p:i:l:t:o:hxsb", long_options, NULL);
+		c = getopt_long(argc, argv, "n:f:m:d:c:v:p:i:l:t:g:o:hxsb", long_options, NULL);
 		if (c == -1)
 			break;
 		switch(c) {
@@ -167,6 +169,9 @@ int __cdecl main(int argc, char** argv)
 			break;
 		case 'p':
 			dev.pid = (unsigned short)strtol(optarg, NULL, 0);
+			break;
+		case 'g':
+			opd.device_guid = optarg;
 			break;
 		case 'i':
 			dev.is_composite = TRUE;
